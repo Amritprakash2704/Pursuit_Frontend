@@ -1,58 +1,72 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
-
-function App() {
+import Home from './containers/Home/Home'
+import Grader from './containers/Home/Grader'
+import Scheduler from './containers/Home/Scheduler'
+import Question from './containers/Home/Question'
+import LogIn from './containers/Login'
+import Dashboard from './containers/Dashboard'
+import Season from './containers/Season'
+import NotFound from './components/NotFound'
+import Logout from './components/logout';
+import Oauth_Jump from './components/oauth_jump'
+import Appbar from './components/AppBar';
+import Appdrawer from './components/Appdrawer'
+import Grid from '@mui/material/Grid';
+import { Box } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux'
+import { login } from './app/features/userslice';
+export default function App() {
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated)
+  if(!isAuthenticated){
+      if(localStorage.getItem('token')!=undefined && localStorage.getItem('token')!=null){
+          dispatch(login())
+      }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+    <BrowserRouter>
+    <Routes>
+      <Route path = 'login' element = {<LogIn />}/>
+      <Route path='oauth_jump' element={<Oauth_Jump/>}/>
+      <Route path= 'logout' element={<Logout/>}/>
+      <Route component={<NotFound/>}/>
+    </Routes>
+    
+   { isAuthenticated &&
+   <div>
+    <Appbar/>
+    <Box mt = {2} >
+    <Grid container = {2} spacing={2} >
+      <Grid item  xs={2} sx={{
+        
+      }}>
+        <Appdrawer />
+      </Grid>
+      <Grid item xs={8}>
+        <Routes>
+            <Route path = 'season' element = {<Season />} />
+
+            <Route path='home' >
+              <Route path='' element={<Home/>}/>
+              <Route path='grader' element={<Grader/>}/> 
+              <Route path='question' element={<Question />}/>
+              <Route path='scheduler' element={<Scheduler/>}/>\
+            </Route>
+            <Route path='dashboard' >
+              <Route path = '' element = {<Dashboard/>}/>
+              <Route component={<NotFound/>}/>
+            </Route>
+        </Routes>
+      </Grid>
+      </Grid>
+      </Box>
+      </div> }
+     
+  </BrowserRouter>
+  );
+};
+
+
