@@ -15,7 +15,7 @@ export const userSlice = createSlice({
         logout : (state) => {
             state.isAuthenticated = false
             localStorage.removeItem('token')
-        }
+        } ,
     } ,
 });
 

@@ -5,10 +5,12 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea } from '@mui/material';
-import {setActiveSeason} from '../app/features/seasonSlice'
+import {setActiveSeason} from '../app/features/seasonslice'
 import { useDispatch ,useSelector} from 'react-redux';
 import axios from 'axios'
 import {setRoundData} from '../app/features/roundslice'
+import {Navigate} from 'react-router-dom'
+
 const bull = (
     <Box
       component="span"
@@ -19,24 +21,28 @@ const bull = (
   );
 
 const SeasonCard = (props) => {
+    const [onDashboard,setOnDashboard] = React.useState(false)
     const dispatch = useDispatch()
     const activeSeason = useSelector((state)=>state.season.activeSeason)
     const token = useSelector((state) => state.token.token);
-    const url_round = 'http://localhost:8000/pursuit_app/season/season_info/'
+    if(onDashboard==true){
+    const url_round = 'http://localhost:8000/pursuit_app/season/'+ activeSeason +'/season_info/' 
     const config = {
         headers : {
             'Authorization' : 'Token ' + token ,
         }
     }
-    const handleContentClick = (event)=>{
-        axios.get(url_round,config)
+    axios.get(url_round,config)
             .then(res=>{
                 dispatch(setRoundData(res.data))
-                console.log(res.data)
+                
             })
             .catch(err=>{
                 console.log(err)
             })
+}
+    const handleContentClick = (event)=>{
+        setOnDashboard(true)
     }
     
 
@@ -45,9 +51,12 @@ const SeasonCard = (props) => {
             p : 2 ,
             width : 250 ,
             m : 1 ,
-        }}>
-            <CardActionArea  id={props.id} onClick={()=>dispatch(setActiveSeason(props.id))}>
-            <CardContent  onClick={handleContentClick}>
+        }}  onClick={()=>dispatch(setActiveSeason(props.id))}>
+            <CardActionArea  id={props.id} onClick={handleContentClick}>
+            <CardContent  >
+            {onDashboard && 
+                <Navigate to='/dashboard'></Navigate>
+            }
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 {props.season_type=='d' &&
                     <span>Designer</span>

@@ -1,15 +1,15 @@
 import React from 'react' ;
-import { useSelector } from 'react-redux';
-import Button from '@mui/material/Button';
+import { useDispatch, useSelector } from 'react-redux';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import GradeIcon from '@mui/icons-material/Grade';
-import IconButton from '@mui/material/IconButton';
 import ExpandIcon from '@mui/icons-material/Expand';
 import { styled, alpha } from '@mui/material/styles';
 import Fab from '@mui/material/Fab';
+import { setActiveRound, setRoundData } from '../app/features/roundslice';
+import axios from 'axios';
+import { setStudentData } from '../app/features/studentslice';
 const StyledMenu = styled((props) => (
     <Menu
       elevation={0}
@@ -18,7 +18,7 @@ const StyledMenu = styled((props) => (
         horizontal: 'right',
       }}
       transformOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       {...props}
@@ -53,19 +53,45 @@ const StyledMenu = styled((props) => (
 
 const RoundMenu = () =>{
     const roundData = useSelector((state)=>state.round.roundData)
+    const roundState = useSelector((state)=>state.round)
+    const studentState = useSelector((state)=>state.student)
+    const token = useSelector((state)=>state.token.token)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const dispatch = useDispatch()
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
       setAnchorEl(null);
     };
-    console.log(roundData)
-    console.log('hello')
+    function getStudentData(){
+      const url = 'http://localhost:8000/pursuit_app/student/'+roundState.activeRound+'/interview_dashboard'
+      const config = {
+        headers : {
+            'Authorization' : 'Token ' + token ,
+        } 
+    }
+    if(roundState.activeRound!=-1){
+      axios.get(url,config)
+      .then(res=>{
+        dispatch(setStudentData(res.data))
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
+    }
+    function handleMenuItemClick(round_id){
+      dispatch(setActiveRound(round_id));
+      setAnchorEl(null)
+    }
+    React.useEffect(()=>{
+      getStudentData();
+    },[roundState.activeRound])
     const menu_item = roundData.map((props)=>
-    <div>
-        <MenuItem key={props.id}>
+    <div key={props.id} onClick={()=>handleMenuItemClick(props.id)}>
+        <MenuItem >
         {props.round_type =='T' && 
             <GradeIcon/>
         }
