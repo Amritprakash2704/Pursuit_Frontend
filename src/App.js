@@ -9,7 +9,7 @@ import LogIn from './containers/Login'
 import Dashboard from './containers/Dashboard'
 import Season from './containers/Season'
 import NotFound from './components/NotFound'
-import Profile from './components/profile'
+import Profile from './containers/profile'
 import Logout from './components/logout';
 import Oauth_Jump from './components/oauth_jump'
 import Appbar from './components/AppBar';
@@ -41,10 +41,10 @@ export default function App() {
     <Appbar/>
     <Box mt = {2} >
     <Grid container = {2} spacing={1} >
-      <Grid item  xs={1} >
+      {/* <Grid item  xs={1} >
         <Appdrawer />
-      </Grid>
-      <Grid item xs={11} >
+      </Grid> */}
+      <Grid item xs={12} >
         <Routes>
             <Route path = 'season' element = {<Season />} />
             <Route path='profile' element={<Profile/>}/>

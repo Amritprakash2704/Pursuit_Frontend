@@ -4,6 +4,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import InterviewRoundTable from '../components/InterviewRoundTable2';
 import RoundMenu from '../components/RoundMenu'
+import Container from '@mui/material/Container';
+
 const  Dashboard=()=>{
     const token = useSelector((state)=>state.token.token)
     const config = {
@@ -11,12 +13,13 @@ const  Dashboard=()=>{
             'Authorization' : 'Token ' + token ,
         }
     }
-    
+    const [openModal,setOpenModal]=React.useState(false);
     return (
     <div>
-        dashboard
+        <Container fixed>
         <RoundMenu />
         <InterviewRoundTable />
+        </Container>
     </div>
     )
 }

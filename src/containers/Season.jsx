@@ -17,7 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Typography from '@mui/material/Typography';
 import RoundCard from '../components/RoundCard'
-
+import Container from '@mui/material/Container';
 const url = 'http://localhost:8000/pursuit_app/season'
 
 const style = {
@@ -185,8 +185,8 @@ function Season() {
         getSeasonData()
     }, []);
     return (
+            <Container fixed>
         <div>
-
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -206,6 +206,7 @@ function Season() {
             <SeasonModal  open={open} handleClose={handleClose} />
 }
         </div>
+        </Container>
     )
 };
 
