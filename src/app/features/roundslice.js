@@ -20,7 +20,7 @@ function getCookie(cname) {
 const initialState={
     roundData : [] ,
     activeRound : getCookie('activeRound'),
-
+    activeRoundType : "D",
 }
 
 const roundSlice = createSlice({
@@ -35,8 +35,12 @@ const roundSlice = createSlice({
             state.activeRound=action.payload
             document.cookie="activeRound="+state.activeRound
         } ,
+        setActiveRoundType : (state,action)=>{
+            state.activeRoundType=action.payload
+        }
+
     }
 })
 
-export const {setRoundData , setActiveRound} = roundSlice.actions
+export const {setRoundData , setActiveRound , setActiveRoundType } = roundSlice.actions
 export default roundSlice.reducer

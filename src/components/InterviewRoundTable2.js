@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import Box from '@mui/material/Box';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import InfoIcon from '@mui/icons-material/Info';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
@@ -114,16 +113,17 @@ const InterviewRoundTable=(props)=>{
     const createRows=()=>{
         const arr = [];
         studentState.studentData.map((props)=>{
+            console.log(props)
             const item = {
-                id : props.enrollment_no,
-                enrollment_no : props.enrollment_no,
-                mobile_number : props.mobile_number,
-                student_name : props.student_name,
-                email : props.email,
-                interview_time : interview_time(props.interviews[0].start_time),
-                selection_status : props.selection_status,
-                interview_status : (props.interviews[0].panel.status ? 'Done' :'Pending'),
-                interview_location : props.interviews[0].panel.location,
+                id : props.enrollment_no ,
+                enrollment_no : props.enrollment_no , 
+                mobile_number : props.mobile_number ,
+                student_name : props.student_name ,
+                email : props.email ,
+                interview_time : ((props.interviews!=undefined && props.interviews.length!=0) ? interview_time(props.interviews[0].start_time):'Not Set') ,
+                selection_status : props.selection_status ,
+                interview_status : ((props.interviews!=undefined && props.interviews.length!=0 && props.interviews[0].panel.status) ? 'Done' :'Pending') ,
+                interview_location : ((props.interviews!=undefined && props.interviews.length!=0) ? props.interviews[0].panel.location : 'Not Set Yet') ,
             }
             arr.push(item);
         })

@@ -7,7 +7,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import ExpandIcon from '@mui/icons-material/Expand';
 import { styled, alpha } from '@mui/material/styles';
 import Fab from '@mui/material/Fab';
-import { setActiveRound, setRoundData } from '../app/features/roundslice';
+import { setActiveRound, setRoundData,setActiveRoundType } from '../app/features/roundslice';
 import axios from 'axios';
 import { setStudentData } from '../app/features/studentslice';
 const StyledMenu = styled((props) => (
@@ -101,6 +101,12 @@ const RoundMenu = () => {
   }
   function handleMenuItemClick(round_id) {
     dispatch(setActiveRound(round_id));
+    roundData.map((props)=>{
+      if(props.id==round_id){
+
+      }
+    }
+    );
     setAnchorEl(null)
   }
   React.useEffect(() => {

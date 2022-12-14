@@ -19,10 +19,11 @@ const DashboardSearch = (props) => {
     return (
         <Paper
             component="form"
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', }}
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', border:1,borderRadius:'10px' }}
         >
             <InputBase
                 value={searchText}
+                onChange={(e)=>setSearchText(e.target.value)}
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search"
                 inputProps={{ 'aria-label': 'search throught fields' }}
@@ -76,7 +77,7 @@ const DashboardTaskBar = (props) => {
                 px: 5,
                 mb: 1,
             }}>
-                <Grid Item xs={4}>
+                <Grid Item xs={4} >
                     <DashboardSearch />
                 </Grid>
                 <Grid Item xs={4} style={{
