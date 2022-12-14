@@ -10,13 +10,16 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import TextField from '@mui/material/TextField';
 
+
 const InterveiwDate=(props)=>{
     const[time,setTime]=React.useState(props.time)
     const handleChange=(newvalue)=>{
         const d = new Date(newvalue);
         const t = d.getTime();
-        setTime(newvalue);
+        setTime(t);
+
     }
+    
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
 
@@ -37,7 +40,16 @@ const InterviewRoundTable=(props)=>{
 
     }])
     const [pageSize, setPageSize] = React.useState(5);
-    
+    const handleCheckBoxChange=(itm)=>{
+        const selectedItemsLength = itm.length;
+        if(selectedItemsLength>0){
+            props.openCheckboxSelection(true)
+            props.handleSelectedStudent(itm)
+        }else if(selectedItemsLength==0){
+            props.openCheckboxSelection(false)
+        }
+    }
+
     const columns=[
         {
             field : 'enrollment_no',
@@ -109,13 +121,12 @@ const InterviewRoundTable=(props)=>{
                 student_name : props.student_name,
                 email : props.email,
                 interview_time : interview_time(props.interviews[0].start_time),
-                selection_status : 'P',
+                selection_status : props.selection_status,
                 interview_status : (props.interviews[0].panel.status ? 'Done' :'Pending'),
                 interview_location : props.interviews[0].panel.location,
             }
             arr.push(item);
         })
-
         return arr;
     }
     React.useEffect(()=>{
@@ -130,14 +141,14 @@ const InterviewRoundTable=(props)=>{
             autoHeight
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[10, 15, 20]}
+            rowsPerPageOptions={[5,10, 15, 20]}
             pagination
             rows={rows}
             columns={columns}
             checkboxSelection
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
-            onSelectionModelChange={itm => console.log(itm)}
+            onSelectionModelChange={itm => handleCheckBoxChange(itm)}
             />
         </Box>
     )

@@ -159,6 +159,7 @@ function Season() {
     const activeSeason = useSelector((state) => state.season.activeSeason);
     const token = useSelector((state) => state.token.token);
     const [open, setOpen] = React.useState(false)
+    console.log(activeSeason)
     const handleClick = () => {
         setOpen(true)
     }
