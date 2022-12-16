@@ -35,8 +35,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 class UserViewSet(viewsets.ModelViewSet) :
     serializer_class = UserSerializer
     queryset = Img_Member.objects.all()
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [SessionAuthentication ,]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication ,]
 
     @action(
         methods=['POST' , 'GET' ,] ,

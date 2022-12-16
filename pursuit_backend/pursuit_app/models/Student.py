@@ -25,7 +25,7 @@ class Student ( models.Model ) :
     department = models.CharField( 'department' , max_length=5 , )#choices to add
     cg = models.DecimalField( 'cg' , max_digits = 3 , decimal_places=1 , )
     season = models.ForeignKey( Season , on_delete = models.CASCADE , )
-    status = models.ForeignKey( Round , on_delete=models.CASCADE , )
+    status = models.ForeignKey( Round , on_delete=models.CASCADE , related_name='students')
     role = models.CharField('role' , max_length = 1 , choices = ROLE , default = DEVELOPER , )
     mobile_number = models.CharField( 'mobile number' , max_length=14 , null=True)
     email = models.EmailField( max_length=254 , null=True)

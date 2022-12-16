@@ -1,5 +1,6 @@
 from pursuit_app.serializers.Student import StudentSerializer
 from pursuit_app.serializers.Student import StudentInterviewDashboardSerializer
+from pursuit_app.serializers.Student import StudentTestDashboardSerializer
 from pursuit_app.serializers.Question import QuestionSerializer
 from pursuit_app.serializers.Score import ScoreSerializer
 from pursuit_app.serializers.User import UserSerializer
