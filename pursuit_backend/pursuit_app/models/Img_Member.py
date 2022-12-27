@@ -3,7 +3,7 @@ from unittest.mock import NonCallableMock
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser , BaseUserManager , PermissionsMixin
 from django.contrib.auth.models import AbstractUser
-
+from django.contrib.auth.hashers import make_password
 class UserAccountManager(BaseUserManager) :
 
     def create_user(self,enrollment_no, password=None, **other_fields,) :
@@ -11,18 +11,17 @@ class UserAccountManager(BaseUserManager) :
             raise ValueError('invalid enrollment number')
 
         user = self.model(enrollment_no=enrollment_no, **other_fields)
-        # user.set_unusable_password()
-        user.save()
+        user.set_password(password)
+        user.save(using=self._db)
 
         return user
 
 
-    def create_superuser(self, enrollment_no , password,**extrafields) :
-        user = self.create_user(enrollment_no , password)
+    def create_superuser(self, enrollment_no , password=None,**extrafields) :
         extrafields.setdefault("is_staff", True)
         extrafields.setdefault("is_superuser", True)
-        user.save()
-        return user
+        
+        return self.create_user(enrollment_no,password,**extrafields)
 
 class Img_Member(AbstractBaseUser, PermissionsMixin) :
     FIRST = '1'
@@ -53,7 +52,7 @@ class Img_Member(AbstractBaseUser, PermissionsMixin) :
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'enrollment_no'
-    REQUIRED_FIELDS = ['name' , 'year']
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return str(self.enrollment_no)
